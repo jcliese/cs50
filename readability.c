@@ -2,20 +2,24 @@
 #include <cs50.h>
 #include <math.h>
 
+//initialization of the functions
 int count_letters(string);
 int count_words(string str);
 int count_sentences(string str);
 int get_index(int letters, int words, int sentences);
 
+//main function
 int main(void)
 {
+    //prompt for user input
     string str = get_string("Text:\n");
-    printf("%s\n", str);
+    //call of different counting functions
     int letters = count_letters(str);
     int words = count_words(str);
     int sentences = count_sentences(str);
     int index = get_index(letters, words, sentences);
-    if(index < 1)
+    //special cases for index < 1 && index >= 16
+    if (index < 1)
     {
         printf("Before Grade 1\n");
     }
@@ -29,13 +33,14 @@ int main(void)
     }
 }
 
+//count the amount of letters
 int count_letters(string str)
 {
     int letters = 0;
     int i = 0;
-    while(str[i]!='\0')
+    while (str[i] != '\0')
     {
-        if((str[i]>='a' && str[i]<='z') || (str[i]>='A' && str[i]<='Z'))
+        if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
         {
             letters++;
         }
@@ -44,13 +49,14 @@ int count_letters(string str)
     return letters;
 }
 
+//count the ammount of words
 int count_words(string str)
 {
     int words = 1;
     int i = 0;
-    while(str[i]!='\0')
+    while (str[i] != '\0')
     {
-        if(str[i]==' ' )
+        if (str[i] == ' ')
         {
             words++;
         }
@@ -59,13 +65,14 @@ int count_words(string str)
     return words;
 }
 
+//count the amount of sentences
 int count_sentences(string str)
 {
     int sentences = 0;
     int i = 0;
-    while(str[i]!='\0')
+    while (str[i] != '\0')
     {
-        if(str[i]=='.' || str[i]=='!' || str[i]=='?' )
+        if (str[i] == '.' || str[i] == '!' || str[i] == '?')
         {
             sentences++;
         }
@@ -74,6 +81,7 @@ int count_sentences(string str)
     return sentences;
 }
 
+//index calculation function
 int get_index(int let, int wrds, int sent)
 {
     double index, letters, sentences, words = 0;

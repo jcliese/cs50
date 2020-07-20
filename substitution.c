@@ -20,6 +20,10 @@ int main(int argc, char *argv[])
             string cypher = encipher(key, plaintext);
             printf("ciphertext: %s\n", cypher);
         }
+        else
+        {
+            return 1;
+        }
     }
     else
     {

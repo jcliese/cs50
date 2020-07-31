@@ -91,7 +91,6 @@ int main(int argc, string argv[])
     }
 
     add_pairs();
-    printf("Winner: %i; Loser: %i\n", pairs[0].winner, pairs[0].loser);
     sort_pairs();
     lock_pairs();
     print_winner();
@@ -131,6 +130,8 @@ void record_preferences(int ranks[])
 void add_pairs(void)
 {
     pair_count = 0;
+    //pairs[0].winner = -1;
+    //pairs[0].loser = -1;
     for (int i = 0; i < candidate_count; i++)
     {
         for (int j = i + 1; j < candidate_count; j++)
@@ -159,7 +160,52 @@ void add_pairs(void)
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    // TODO
+    if (pair_count == 0)
+    {
+        printf("NO PAIRS\n");
+        return;
+    }
+    typedef struct
+    {
+        int winner;
+        int loser;
+        int diff;
+    }
+    comp;
+    comp temp_diff[MAX * (MAX - 1) / 2];
+    for (int i = 0; i < pair_count; i++)
+    {
+        temp_diff[i].winner = pairs[i].winner;
+        temp_diff[i].loser = pairs[i].loser;
+        temp_diff[i].diff = preferences[pairs[i].winner][pairs[i].loser] - preferences[pairs[i].loser][pairs[i].winner];
+    }
+    printf("temp_diff: %i; %i; diff: %i\n", temp_diff[0].winner, temp_diff[0].loser, temp_diff[0].diff);
+    int temp_winner, temp_loser, temp_difference;
+    for (int i = 0 ; i < pair_count - 1; i++)
+    {
+        for (int j = 0 ; j < pair_count - i - 1; j++)
+        {
+            if (temp_diff[j].diff < temp_diff[j + 1].diff)
+            {
+                temp_difference = temp_diff[j].diff;
+                temp_winner = temp_diff[j].winner;
+                temp_loser = temp_diff[j].loser;
+                temp_diff[j].diff = temp_diff[j+1].diff;
+                temp_diff[j].winner = temp_diff[j+1].winner;
+                temp_diff[j].loser = temp_diff[j+1].loser;
+                temp_diff[j + 1].diff = temp_difference;
+                temp_diff[j + 1].winner = temp_winner;
+                temp_diff[j + 1].loser = temp_loser;
+            }
+        }
+    }
+    for(int i = 0; i < pair_count; i++)
+    {
+        pairs[i].winner = temp_diff[i].winner;
+        pairs[i].loser = temp_diff[i].loser;
+        printf("PAIRS: win-%i; los-%i\n", temp_diff[i].winner, temp_diff[i].loser);
+        printf("HIER: %i %i; diff: %i\n", temp_diff[i].winner, temp_diff[i].loser, temp_diff[i].diff);
+    }
     return;
 }
 

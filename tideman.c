@@ -33,7 +33,7 @@ void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
-bool check_cycle(int winner, int loser);
+bool check_cycle(int winner, int loser, int initial_winner);
 
 int main(int argc, string argv[])
 {
@@ -220,7 +220,7 @@ void lock_pairs(void)
     }
     for (int i = 0; i < pair_count; i++)
     {
-        bool circle = check_cycle(pairs[i].winner, pairs[i].loser);
+        bool circle = check_cycle(pairs[i].winner, pairs[i].loser, pairs[i].winner);
         if (!circle)
         {
             locked[pairs[i].winner][pairs[i].loser] = true;
@@ -236,9 +236,9 @@ void lock_pairs(void)
     return;
 }
 
-bool check_cycle(int winner, int loser)
+bool check_cycle(int winner, int loser, int initial_winner)
 {
-    if(locked[loser][winner] == true)
+    if(locked[loser][initial_winner] == true)
     {
         return true;
     }
@@ -246,7 +246,7 @@ bool check_cycle(int winner, int loser)
     {
         if(locked[loser][i] == true)
         {
-            check_cycle(loser, i);
+            check_cycle(loser, i, initial_winner);
         }
     }
     return false;

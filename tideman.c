@@ -202,7 +202,6 @@ void sort_pairs(void)
     {
         pairs[i].winner = temp_diff[i].winner;
         pairs[i].loser = temp_diff[i].loser;
-        printf("PAIRS: win-%i; los-%i\n", temp_diff[i].winner, temp_diff[i].loser);
         printf("HIER: %i %i; diff: %i\n", temp_diff[i].winner, temp_diff[i].loser, temp_diff[i].diff);
     }
     return;
@@ -221,7 +220,8 @@ void lock_pairs(void)
     for (int i = 0; i < pair_count; i++)
     {
         bool circle = check_cycle(pairs[i].winner, pairs[i].loser, pairs[i].winner);
-        if (!circle)
+        printf("Circle: %i \n", circle);
+        if (circle == 0)
         {
             locked[pairs[i].winner][pairs[i].loser] = true;
         }

@@ -33,6 +33,7 @@ void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
+bool check_cycle(int winner, int loser);
 
 int main(int argc, string argv[])
 {
@@ -100,7 +101,6 @@ int main(int argc, string argv[])
 // Update ranks given a new vote
 bool vote(int rank, string name, int ranks[])
 {
-
     for (int i = 0; i < candidate_count; i++)
     {
         if (strcmp(candidates[i], name) == 0)
@@ -179,7 +179,6 @@ void sort_pairs(void)
         temp_diff[i].loser = pairs[i].loser;
         temp_diff[i].diff = preferences[pairs[i].winner][pairs[i].loser] - preferences[pairs[i].loser][pairs[i].winner];
     }
-    printf("temp_diff: %i; %i; diff: %i\n", temp_diff[0].winner, temp_diff[0].loser, temp_diff[0].diff);
     int temp_winner, temp_loser, temp_difference;
     for (int i = 0 ; i < pair_count - 1; i++)
     {
@@ -212,8 +211,51 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        for (int j = 0; j < candidate_count; j++)
+        {
+            locked[i][j] = false;
+        }
+    }
+    for (int i = 0; i < pair_count; i++)
+    {
+        check_cycle(pairs[i].winner, pairs[i].loser);
+        /*if (row_lock[i] == false)
+        {
+            locked[pairs[i].winner][pairs[i].loser] = true;
+            row_lock[pairs[i].winner] = true;
+        }
+        else
+        {
+            locked[]
+        }*/
+
+    }
+    /*for (int i = 0; i < candidate_count; i++)
+    {
+        for (int j = 0; j < candidate_count; j++)
+        {
+            printf("LOCKED: %i over %i: %i\n", i, j, locked[i][j]);
+        }
+    }*/
     return;
+}
+
+bool check_cycle(int winner, int loser)
+{
+    if(locked[loser][winner] == true)
+    {
+        return true;
+    }
+    for(int i = 0; i < candidate_count; i++)
+    {
+        if(locked[loser][i] == true)
+        {
+            check_cycle(loser, i);
+        }
+    }
+    return false;
 }
 
 // Print the winner of the election

@@ -214,7 +214,7 @@ void lock_pairs(void)
     {
         for (int j = 0; j < candidate_count; j++)
         {
-            locked[i][j] = false;
+            locked[i][j] = 0;
         }
     }
     for (int i = 0; i < pair_count; i++)
@@ -238,13 +238,13 @@ void lock_pairs(void)
 
 bool check_cycle(int winner, int loser, int initial_winner)
 {
-    if(locked[loser][initial_winner] == true)
+    if(locked[loser][initial_winner] == 1)
     {
         return true;
     }
     for(int i = 0; i < candidate_count; i++)
     {
-        if(locked[loser][i] == true)
+        if(locked[loser][i] == 1)
         {
             check_cycle(loser, i, initial_winner);
         }

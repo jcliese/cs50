@@ -223,7 +223,7 @@ void lock_pairs(void)
         printf("Circle: %i \n", circle);
         if (circle == 0)
         {
-            locked[pairs[i].winner][pairs[i].loser] = true;
+            locked[pairs[i].winner][pairs[i].loser] = 1;
         }
 
     }for (int i = 0; i < candidate_count; i++)

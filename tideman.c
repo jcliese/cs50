@@ -103,6 +103,7 @@ bool vote(int rank, string name, int ranks[])
 {
     for (int i = 0; i < candidate_count; i++)
     {
+        //check if input fits one of the candidates
         if (strcmp(candidates[i], name) == 0)
         {
             ranks[rank] = i;
@@ -134,6 +135,7 @@ void add_pairs(void)
     {
         for (int j = i + 1; j < candidate_count; j++)
         {
+            //define the winner in an direct comparison
             if (preferences[i][j] > preferences[j][i])
             {
                 pairs[pair_count].winner = i;
@@ -163,6 +165,7 @@ void sort_pairs(void)
         printf("NO PAIRS\n");
         return;
     }
+    //define a new structure for a temporary comparison
     typedef struct
     {
         int winner;
@@ -178,6 +181,7 @@ void sort_pairs(void)
         temp_diff[i].diff = preferences[pairs[i].winner][pairs[i].loser] - preferences[pairs[i].loser][pairs[i].winner];
     }
     int temp_winner, temp_loser, temp_difference;
+    //use bubble sort to sort the pairs according to their differences
     for (int i = 0 ; i < pair_count - 1; i++)
     {
         for (int j = 0 ; j < pair_count - i - 1; j++)
@@ -187,16 +191,17 @@ void sort_pairs(void)
                 temp_difference = temp_diff[j].diff;
                 temp_winner = temp_diff[j].winner;
                 temp_loser = temp_diff[j].loser;
-                temp_diff[j].diff = temp_diff[j+1].diff;
-                temp_diff[j].winner = temp_diff[j+1].winner;
-                temp_diff[j].loser = temp_diff[j+1].loser;
+                temp_diff[j].diff = temp_diff[j + 1].diff;
+                temp_diff[j].winner = temp_diff[j + 1].winner;
+                temp_diff[j].loser = temp_diff[j + 1].loser;
                 temp_diff[j + 1].diff = temp_difference;
                 temp_diff[j + 1].winner = temp_winner;
                 temp_diff[j + 1].loser = temp_loser;
             }
         }
     }
-    for(int i = 0; i < pair_count; i++)
+    //define the pairs new after sorting them
+    for (int i = 0; i < pair_count; i++)
     {
         pairs[i].winner = temp_diff[i].winner;
         pairs[i].loser = temp_diff[i].loser;
@@ -216,11 +221,10 @@ void lock_pairs(void)
     }
     for (int i = 0; i < pair_count; i++)
     {
+        //initial call of check_cycle
         int circle = check_cycle(pairs[i].winner, pairs[i].loser, pairs[i].winner);
-        //printf("circle: %i\n", circle);
         if (circle == 0)
         {
-            //printf("lock_in: win:%i lose:%i\n", pairs[i].winner, pairs[i].loser);
             locked[pairs[i].winner][pairs[i].loser] = 1;
         }
 
@@ -232,15 +236,17 @@ void lock_pairs(void)
 int check_cycle(int winner, int loser, int initial_winner)
 {
     int circle = 0;
-    if(locked[loser][initial_winner] == 1)
+    //check if initial winner was beaten and therefore a cycle would be created
+    if (locked[loser][initial_winner] == 1)
     {
         return 1;
     }
     else
     {
-        for(int i = 0; i < candidate_count; i++)
+        //call the check_cycle function every time a candidate beats another one
+        for (int i = 0; i < candidate_count; i++)
         {
-            if(locked[loser][i] == 1)
+            if (locked[loser][i] == 1)
             {
                 circle += check_cycle(loser, i, initial_winner);
             }
@@ -253,24 +259,27 @@ int check_cycle(int winner, int loser, int initial_winner)
 void print_winner(void)
 {
     int beaten[MAX];
+    //check if a candidate was beaten
     for (int j = 0; j < candidate_count; j++)
     {
         beaten[j] = 0;
         for (int i = 0; i < candidate_count; i++)
         {
-            if(locked[i][j] == 1)
+            if (locked[i][j] == 1)
             {
                 beaten[j] = 1;
             }
         }
     }
-    for(int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count; i++)
     {
         if (beaten[i] == 0)
         {
+            //check if an unbeaten candidate beats another candidate
             for (int j = 0; j < candidate_count; j++)
             {
-                if(locked[i][j] == 1){
+                if (locked[i][j] == 1)
+                {
                     printf("%s\n", candidates[i]);
                     return;
                 }

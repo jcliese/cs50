@@ -33,7 +33,7 @@ void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
-bool check_cycle(int winner, int loser, int initial_winner);
+int check_cycle(int winner, int loser, int initial_winner);
 
 int main(int argc, string argv[])
 {
@@ -130,8 +130,6 @@ void record_preferences(int ranks[])
 void add_pairs(void)
 {
     pair_count = 0;
-    //pairs[0].winner = -1;
-    //pairs[0].loser = -1;
     for (int i = 0; i < candidate_count; i++)
     {
         for (int j = i + 1; j < candidate_count; j++)
@@ -219,10 +217,11 @@ void lock_pairs(void)
     }
     for (int i = 0; i < pair_count; i++)
     {
-        bool circle = check_cycle(pairs[i].winner, pairs[i].loser, pairs[i].winner);
-        printf("Circle: %i \n", circle);
+        int circle = check_cycle(pairs[i].winner, pairs[i].loser, pairs[i].winner);
+        printf("circle: %i\n", circle);
         if (circle == 0)
         {
+            printf("lock_in: win:%i lose:%i\n", pairs[i].winner, pairs[i].loser);
             locked[pairs[i].winner][pairs[i].loser] = 1;
         }
 
@@ -236,20 +235,24 @@ void lock_pairs(void)
     return;
 }
 
-bool check_cycle(int winner, int loser, int initial_winner)
+int check_cycle(int winner, int loser, int initial_winner)
 {
     if(locked[loser][initial_winner] == 1)
     {
-        return true;
+        printf("C-I-R-C\n");
+        return 1;
     }
-    for(int i = 0; i < candidate_count; i++)
+    else
     {
-        if(locked[loser][i] == 1)
+        for(int i = 0; i < candidate_count; i++)
         {
-            check_cycle(loser, i, initial_winner);
+            if(locked[loser][i] == 1)
+            {
+                return 0 + check_cycle(loser, i, initial_winner);
+            }
         }
+        return 0;
     }
-    return false;
 }
 
 // Print the winner of the election

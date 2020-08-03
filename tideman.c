@@ -237,6 +237,7 @@ void lock_pairs(void)
 
 int check_cycle(int winner, int loser, int initial_winner)
 {
+    int circle = 0;
     if(locked[loser][initial_winner] == 1)
     {
         printf("C-I-R-C\n");
@@ -248,10 +249,10 @@ int check_cycle(int winner, int loser, int initial_winner)
         {
             if(locked[loser][i] == 1)
             {
-                return 0 + check_cycle(loser, i, initial_winner);
+                circle += check_cycle(loser, i, initial_winner);
             }
         }
-        return 0;
+        return circle;
     }
 }
 

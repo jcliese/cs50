@@ -200,7 +200,6 @@ void sort_pairs(void)
     {
         pairs[i].winner = temp_diff[i].winner;
         pairs[i].loser = temp_diff[i].loser;
-        printf("HIER: %i %i; diff: %i\n", temp_diff[i].winner, temp_diff[i].loser, temp_diff[i].diff);
     }
     return;
 }
@@ -225,22 +224,16 @@ void lock_pairs(void)
             locked[pairs[i].winner][pairs[i].loser] = 1;
         }
 
-    }for (int i = 0; i < candidate_count; i++)
-    {
-        for (int j = 0; j < candidate_count; j++)
-        {
-            printf("LOCKED: %i over %i: %i\n", i, j, locked[i][j]);
-        }
     }
     return;
 }
 
+//check if locking creates a cycle
 int check_cycle(int winner, int loser, int initial_winner)
 {
     int circle = 0;
     if(locked[loser][initial_winner] == 1)
     {
-        printf("C-I-R-C\n");
         return 1;
     }
     else
@@ -259,7 +252,31 @@ int check_cycle(int winner, int loser, int initial_winner)
 // Print the winner of the election
 void print_winner(void)
 {
-    // TODO
+    int beaten[MAX];
+    for (int j = 0; j < candidate_count; j++)
+    {
+        beaten[j] = 0;
+        for (int i = 0; i < candidate_count; i++)
+        {
+            if(locked[i][j] == 1)
+            {
+                beaten[j] = 1;
+            }
+        }
+    }
+    for(int i = 0; i < candidate_count; i++)
+    {
+        if (beaten[i] == 0)
+        {
+            for (int j = 0; j < candidate_count; j++)
+            {
+                if(locked[i][j] == 1){
+                    printf("%s", candidates[i]);
+                    return;
+                }
+            }
+        }
+    }
     return;
 }
 

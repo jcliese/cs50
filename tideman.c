@@ -217,10 +217,10 @@ void lock_pairs(void)
     for (int i = 0; i < pair_count; i++)
     {
         int circle = check_cycle(pairs[i].winner, pairs[i].loser, pairs[i].winner);
-        printf("circle: %i\n", circle);
+        //printf("circle: %i\n", circle);
         if (circle == 0)
         {
-            printf("lock_in: win:%i lose:%i\n", pairs[i].winner, pairs[i].loser);
+            //printf("lock_in: win:%i lose:%i\n", pairs[i].winner, pairs[i].loser);
             locked[pairs[i].winner][pairs[i].loser] = 1;
         }
 
@@ -271,7 +271,7 @@ void print_winner(void)
             for (int j = 0; j < candidate_count; j++)
             {
                 if(locked[i][j] == 1){
-                    printf("%s", candidates[i]);
+                    printf("%s\n", candidates[i]);
                     return;
                 }
             }

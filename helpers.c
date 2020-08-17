@@ -65,17 +65,17 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                     }
                     else
                     {
-
                         blue += image[h][w].rgbtBlue;
                         green += image[h][w].rgbtGreen;
                         red += image[h][w].rgbtRed;
                         count++;
                         if (i == 1 && j == 1)
                         {
-                            printf("blue: %i\n", blue);
+                            printf("BLUE: %i", image[h][w].rgbtBlue);
+                            /*printf("blue: %i\n", blue);
                             printf("green: %i\n", green);
                             printf("red: %i\n", red);
-                            printf("count: %i\n", count);
+                            printf("count: %i\n", count);*/
                         }
                     }
                 }

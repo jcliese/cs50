@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        count++;
                         fclose(img);
                         sprintf(filename, "%03i.jpg", count);
                         img = fopen(filename, "a");
@@ -52,6 +51,7 @@ int main(int argc, char *argv[])
                             return 1;
                         }
                         fwrite(buf, sizeof(BYTE), 512, img);
+                        count++;
                     }
                 }
                 else if (count > 0)

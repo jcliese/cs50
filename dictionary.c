@@ -42,7 +42,7 @@ bool check(const char *word)
         return 1;
     }
     cursor = table[hashedValue];
-    while (cursor->next != NULL)
+    while (cursor != NULL)
     {
         //printf("SAME: %s ::: %s\n", cursor->word, word);
         if(strcasecmp(cursor->word, word) == 0)
@@ -80,6 +80,7 @@ void insert(int key, const char *buffer)
     n->next = NULL;
     if (table[key] == NULL)
     {
+        n->next = NULL;
         table[key] = n;
     }
     else
@@ -109,6 +110,7 @@ bool load(const char *dictionary)
         }
     //size();
     }
+    fclose(dict);
     return true;
 }
 
@@ -124,12 +126,13 @@ bool destroy(node *head)
 {
     if (head->next == NULL)
     {
+        free(head);
         return true;
     }
     else
     {
-        head = head->next;
-        destroy(head);
+        destroy(head->next);
+        free(head);
         return true;
     }
     return false;
@@ -142,7 +145,6 @@ bool unload(void)
     {
         if(destroy(table[i]))
         {
-            printf("TRUE\n");
             return true;
         }
     }

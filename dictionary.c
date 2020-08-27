@@ -118,9 +118,33 @@ unsigned int size(void)
     return words;
 }
 
+//destroy list
+
+bool destroy(node *head)
+{
+    if (head->next == NULL)
+    {
+        return true;
+    }
+    else
+    {
+        head = head->next;
+        destroy(head);
+        return true;
+    }
+    return false;
+}
+
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-
+    for (int i = 0; i < N; i++)
+    {
+        if(destroy(table[i]))
+        {
+            printf("TRUE\n");
+            return true;
+        }
+    }
     return false;
 }

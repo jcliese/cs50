@@ -92,6 +92,7 @@ void insert(int key, const char *buffer)
         n->next = table[key];
         table[key] = n;
     }
+    free(n);
 }
 
 // Loads dictionary into memory, returning true if successful else false

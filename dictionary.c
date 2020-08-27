@@ -29,6 +29,10 @@ int words = 0;
 bool check(const char *word)
 {
     char *copy = malloc(strlen(word) + 1);
+    if (copy == NULL)
+    {
+        return false;
+    }
     strcpy(copy, word);
     for(int i = 0; copy[i]; i++){
         copy[i] = tolower(copy[i]);
@@ -37,14 +41,13 @@ bool check(const char *word)
     hashedValue = hash(copy);
     free(copy);
     node *cursor = malloc(sizeof(node));
+    cursor = table[hashedValue];
     if (cursor == NULL)
     {
         return false;
     }
-    cursor = table[hashedValue];
     while (cursor != NULL)
     {
-        //printf("SAME: %s ::: %s\n", cursor->word, word);
         if(strcasecmp(cursor->word, word) == 0)
         {
             free(cursor);
@@ -90,7 +93,6 @@ void insert(int key, const char *buffer)
         n->next = table[key];
         table[key] = n;
     }
-    free(n);
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -110,6 +112,7 @@ bool load(const char *dictionary)
             insert(hashedValue, buf);
             words++;
         }
+    //size();
     }
     fclose(dict);
     return true;
@@ -125,8 +128,9 @@ unsigned int size(void)
 
 bool destroy(node *head)
 {
-    if (head->next == NULL)
+    if (head == NULL)
     {
+        free(head);
         return true;
     }
     else

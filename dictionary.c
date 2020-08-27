@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #include "dictionary.h"
 
@@ -15,7 +17,7 @@ typedef struct node
 node;
 
 // Number of buckets in hash table
-const unsigned int N = 10000;
+const unsigned int N = 9973;
 
 // Hash table
 node *table[N];
@@ -26,7 +28,29 @@ int words = 0;
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    // TODO
+    char *copy = malloc(strlen(word) + 1);
+    strcpy(copy, word);
+    for(int i = 0; copy[i]; i++){
+        copy[i] = tolower(copy[i]);
+    }
+    unsigned int hashedValue = 0;
+    hashedValue = hash(copy);
+    free(copy);
+    node *cursor = malloc(sizeof(node));
+    if (cursor == NULL)
+    {
+        return 1;
+    }
+    cursor = table[hashedValue];
+    while (cursor->next != NULL)
+    {
+        //printf("SAME: %s ::: %s\n", cursor->word, word);
+        if(strcasecmp(cursor->word, word) == 0)
+        {
+            return true;
+        }
+        cursor = cursor->next;
+    }
     return false;
 }
 
@@ -39,10 +63,31 @@ unsigned int hash(const char *word)
     while ((c = *word++))
     {
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-        words++;
     }
     return hash % N;
 
+}
+
+//take dictionary entry and insert it into a linked list at a part of the hash table
+void insert(int key, const char *buffer)
+{
+    node *n = malloc(sizeof(node));
+    if (n == NULL)
+    {
+        return;
+    }
+    strcpy(n->word, buffer);
+    n->next = NULL;
+    if (table[key] == NULL)
+    {
+        table[key] = n;
+    }
+    else
+    {
+        n->next = table[key];
+        table[key] = n;
+    }
+    //free(n);
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -58,30 +103,24 @@ bool load(const char *dictionary)
         char buf[LENGTH];
         while (fscanf(dict, "%s", buf) != EOF)
         {
-            node *n = malloc(sizeof(node));
-            if (n == NULL)
-            {
-                return false;
-            }
-            strcpy(n->word, buf);
-            n->next = NULL;
-            hash(n->word);
+            int hashedValue = hash(buf);
+            insert(hashedValue, buf);
+            words++;
         }
-        size();
+    //size();
     }
-    return false;
+    return true;
 }
 
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
 unsigned int size(void)
 {
-    printf("WORDS: %i", words);
     return words;
 }
 
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
+
     return false;
 }

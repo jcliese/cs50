@@ -139,12 +139,22 @@ bool destroy(node *head)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
+    node *temp;
+    node *cursor;
     for (int i = 0; i < N; i++)
     {
-        if(destroy(table[i]))
+        if (table[i] != NULL)
         {
-            return true;
+            cursor = table[i];
+            while (cursor != NULL)
+            {
+                temp = cursor->next;
+                free(cursor);
+                cursor = temp;
+            }
+            temp = cursor;
+            free(temp);
         }
     }
-    return false;
+    return true;
 }

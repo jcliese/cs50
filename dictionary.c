@@ -47,10 +47,12 @@ bool check(const char *word)
         //printf("SAME: %s ::: %s\n", cursor->word, word);
         if(strcasecmp(cursor->word, word) == 0)
         {
+            free(cursor);
             return true;
         }
         cursor = cursor->next;
     }
+    free(cursor);
     return false;
 }
 
@@ -88,7 +90,7 @@ void insert(int key, const char *buffer)
         n->next = table[key];
         table[key] = n;
     }
-    //free(n);
+    free(n);
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -108,7 +110,6 @@ bool load(const char *dictionary)
             insert(hashedValue, buf);
             words++;
         }
-    //size();
     }
     fclose(dict);
     return true;

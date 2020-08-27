@@ -40,11 +40,7 @@ bool check(const char *word)
     unsigned int hashedValue = 0;
     hashedValue = hash(copy);
     free(copy);
-    node *cursor = malloc(sizeof(node));
-    if (cursor == NULL)
-    {
-        return false;
-    }
+    node *cursor;
     cursor = table[hashedValue];
     while (cursor != NULL)
     {
@@ -53,8 +49,7 @@ bool check(const char *word)
             return true;
         }
         cursor = cursor->next;
-    }
-    free(cursor);
+    };
     return false;
 }
 

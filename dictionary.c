@@ -50,7 +50,6 @@ bool check(const char *word)
     {
         if(strcasecmp(cursor->word, word) == 0)
         {
-            free(cursor);
             return true;
         }
         cursor = cursor->next;

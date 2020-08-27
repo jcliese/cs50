@@ -120,40 +120,25 @@ unsigned int size(void)
 
 //destroy list
 
-bool destroy(node *head)
+void destroy(node *list)
 {
-    if (head == NULL)
+    while (list->next != NULL)
     {
-        free(head);
-        return true;
+        destroy(list->next);
+        break;
     }
-    else
-    {
-        destroy(head->next);
-        free(head);
-        return true;
-    }
-    return false;
+    free(list);
+    return;
 }
 
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    node *temp;
-    node *cursor;
     for (int i = 0; i < N; i++)
     {
         if (table[i] != NULL)
         {
-            cursor = table[i];
-            while (cursor != NULL)
-            {
-                temp = cursor->next;
-                free(cursor);
-                cursor = temp;
-            }
-            temp = cursor;
-            free(temp);
+            destroy(table[i]);
         }
     }
     return true;

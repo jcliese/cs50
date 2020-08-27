@@ -41,11 +41,11 @@ bool check(const char *word)
     hashedValue = hash(copy);
     free(copy);
     node *cursor = malloc(sizeof(node));
-    cursor = table[hashedValue];
     if (cursor == NULL)
     {
         return false;
     }
+    cursor = table[hashedValue];
     while (cursor != NULL)
     {
         if(strcasecmp(cursor->word, word) == 0)

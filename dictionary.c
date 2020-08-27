@@ -127,7 +127,6 @@ bool destroy(node *head)
 {
     if (head->next == NULL)
     {
-        free(head);
         return true;
     }
     else

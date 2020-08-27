@@ -118,8 +118,7 @@ unsigned int size(void)
     return words;
 }
 
-//destroy list
-
+//destroy each element of singly linked list
 void destroy(node *list)
 {
     while (list->next != NULL)

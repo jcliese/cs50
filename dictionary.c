@@ -39,7 +39,7 @@ bool check(const char *word)
     node *cursor = malloc(sizeof(node));
     if (cursor == NULL)
     {
-        return 1;
+        return false;
     }
     cursor = table[hashedValue];
     while (cursor != NULL)

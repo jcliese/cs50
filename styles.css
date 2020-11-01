@@ -1,0 +1,82 @@
+html, body {
+    height: 100%;
+}
+
+.jumbotron
+{
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.fixed-bottom
+{
+    background-color: #b3b3b3;
+    text-align: center;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: #ffe7a6;
+}
+
+.title {
+    text-align: center;
+}
+
+#goldengate {
+    width: 100%;
+}
+
+#soccer-card {
+    margin: auto;
+    margin-top: 10px;
+    border: 2px solid gray;
+}
+
+#team {
+    font-weight: bold;
+}
+
+#code {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    padding: 0px;
+}
+
+.container {
+  position: relative;
+  width: 80%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}

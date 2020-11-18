@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <div class="card" style="30%;">
+        <div class="card-body">
+            <h5 class="card-title">{{ stock["name"] }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Price:  {{ stock["price"] }}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Symbol:  {{ stock["symbol"] }}</h6>
+        </div>
+    </div>
+{% endblock %}

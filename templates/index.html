@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    <table class="table table-dark">
+        <thead>
+            <tr>
+              <th scope="col">Stock</th>
+              <th scope="col">Ticker Symbol</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Price</th>
+              <th scope="col">Current Total Value</th>
+              <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stock in stocks if not stock["amount"] == 0 %}
+            <tr>
+                <td scope="row">{{ stock["name"] }}</td>
+                <td>{{ stock["symbol"] }}</td>
+                <td>{{ stock["amount"] }}</td>
+                <td>{{ stock["price"] }}</td>
+                <td>{{ stock["total"] }}</td>
+                <td><button type="button" data-target="#stockModal" data-toggle="modal" data-symbol="{{ stock["symbol"] }}" class="btn btn-dark">BUY / SELL</button></td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <th scope="row">Total Cash</th>
+                <td colspan="3"></td>
+                <th>{{ cash }}</th>
+                <th></th>
+            </tr>
+            <tr class="table-dark">
+                <th scope="row">Grand Total</th>
+                <td colspan="3"></td>
+                <th>{{ total_value }}</th>
+                <th></th>
+            </tr>
+
+            <div class="modal fade" id="stockModal" tabindex="-1" role="dialog" aria-labelledby="stockModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="stockModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form  method="post">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="symbol" name="symbol">
+                            <label for="amount" class="col-form-label">Amount:</label>
+                            <input type="text" class="form-control" id="amount" name="shares">
+                        </div>
+                        <button type="submit" formaction="/buy" id="buy_stock" class="btn btn-success">Buy</button>
+                        <button type="submit" formaction="/sell" id="sell_stock" class="btn btn-danger">Sell</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <script>
+                $('#stockModal').on('show.bs.modal', function(e) {
+
+                    //get data-id attribute of the clicked element
+                    var stock_symbol = $(e.relatedTarget).data('symbol');
+
+                    //populate the textbox
+                    var modal = $(this)
+                    modal.find('.modal-title').text("Do you want to buy or sell " + stock_symbol +" stocks?")
+                    document.getElementById('symbol').value=stock_symbol
+                });
+
+            </script>
+
+        </tbody>
+    </table>
+{% endblock %}
